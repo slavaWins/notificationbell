@@ -34,6 +34,16 @@ class NotificationBellBuilder {
         return $this;
     }
 
+    /**
+     * эта функция скрывает уведомления от колокольчика то есть его нельзя будет посмотреть на сайте это нужно допустим чтобы отправить e-mail об активации
+     * @return void
+     */
+    public function HideFromNotifyBell() {
+
+        $this->nb->is_hidden = true;
+    }
+
+
     public function SetBtn( $txt, $href ) {
         $this->nb->link_name = $txt;
         $this->nb->link_href = $href;
@@ -41,42 +51,52 @@ class NotificationBellBuilder {
     }
 
     /**
+     * это итоговая функция она уже конкретно отправляет уведомление пользователю указать можно или Edge ник пользователя или сам его объект eu4 вается Что может быть отправлено уведомление этот параметр тоже отдельно включается в билдере
      * @param User|integer $user
      * @return $this
      */
-    public function SendToUser(  $user ) {
+    public function SendToUser( $user, $isAndEmailSend = false ) {
         $uid = $user;
-        if(!is_int($uid)) $uid = $user->id;
-        $this->nb->user_id =$uid;
+        if (!is_int($uid)) $uid = $user->id;
+        $this->nb->user_id = $uid;
         // $nb = $this->nb::clone();
         $this->nb->save();
         // $this->nb =$nb;
-
+        if ($isAndEmailSend) {
+            $nb->SendToEmail();
+        }
         return $this;
     }
 
+
     /**
+     * короткий вариант для отправки уведомления То есть это шорт буквально То есть ты просто пишешь Это не пользователя или его объект сообщения и ссылку Также можно подтвердить что это отправка по имейлу Ну то есть включительно отправка по имейлу
      * @param User|integer $uid
      * @param $message
      * @param $link
      * @return void
      */
-    public static function Short( $uid, $message, $link = null ) {
+    public static function Short( $uid, $message, $link = null, $isAndEmailSend = false ) {
         $nb = new  NotificationBell();
 
-        if(is_int($uid)) {
+        if (is_int($uid)) {
             $nb->user_id = $uid;
-        }else{
+        } else {
             $nb->user_id = $uid->id;
         }
         $nb->message = $message;
 
-        if($link){
-            $nb->link_name="Перейти";
-            $nb->link_href=$link;
+        if ($link) {
+            $nb->link_name = "Перейти";
+            $nb->link_href = $link;
         }
+
         //NotificationBellBuilder::Short(Auth::user(),  );
         $nb->save();
+
+        if ($isAndEmailSend) {
+            $nb->SendToEmail();
+        }
     }
 
 

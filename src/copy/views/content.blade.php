@@ -24,7 +24,7 @@
         <div class="col">
             <small>{{NotificationBellBuilder::time_back($nb->created_at->unix())}}</small>
         </div>
-        @if($nb->link_name)
+        @if($nb->link_href)
             <div class="col">
                 <a class="btn btn-outline-dark col-12" href="{{$nb->link_href}}">Перейти</a>
             </div>

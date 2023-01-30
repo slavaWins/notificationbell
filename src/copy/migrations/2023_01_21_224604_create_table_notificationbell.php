@@ -15,6 +15,8 @@ class CreateTableNotificationbell extends Migration {
 
         Schema::create('notification_bells', function ( Blueprint $table ) {
             $table->id();
+            $table->boolean("is_hidden")->comment("это скрытое уведомление от колокольчика то есть чтобы оно не могло отобразится на сайте то есть это можно отправить только по e-mail")->default(false);
+            $table->boolean("is_email_sended")->comment("Это значит что уведомления уже было отправлено по почте предотвращает всякое дублирование")->default(false);
             $table->boolean("is_view")->comment("Просмотрено ли")->default(false);
             $table->string("title")->comment("тайтл")->nullable();
             $table->text("message")->comment("контент");
