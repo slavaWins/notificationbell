@@ -17,7 +17,7 @@ class CreateTableNotificationbell extends Migration {
             $table->id();
             $table->boolean("is_view")->comment("Просмотрено ли")->default(false);
             $table->string("title")->comment("тайтл")->nullable();
-            $table->string("message")->comment("контент")->nullable();
+            $table->text("message")->comment("контент");
             $table->string("link_name")->comment("кнопка текст")->nullable();
             $table->string("link_href")->comment("кнопка ссылка")->nullable();
             $table->string("image")->comment("внутр.ссылка на аватар")->nullable();

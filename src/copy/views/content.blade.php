@@ -26,7 +26,7 @@
         </div>
         @if($nb->link_name)
             <div class="col">
-                <a class="btn btn-outline-dark col-12">Перейти</a>
+                <a class="btn btn-outline-dark col-12" href="{{$nb->link_href}}">Перейти</a>
             </div>
         @endif
     </div>

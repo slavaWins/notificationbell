@@ -33,7 +33,7 @@ class NotificationBellServiceProvider extends ServiceProvider {
 
         $migrations_path = __DIR__ . '/../copy/views';
         if (file_exists($migrations_path)) {
-            $this->publishes([$migrations_path => resource_path('views/vendor/notificationbell'),], 'public');
+            $this->publishes([$migrations_path => resource_path('views/notificationbell'),], 'public');
         }
 
 

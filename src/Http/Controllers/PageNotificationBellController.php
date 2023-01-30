@@ -6,10 +6,33 @@ use App\Http\Controllers\Controller;
 use App\Models\ResponseApi;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use NotificationBell\Library\NotificationBellBuilder;
 use NotificationBell\Models\NotificationBell;
 
 class PageNotificationBellController extends Controller {
+
+
+    public function create( Request $request ) {
+        /** @var User $user */
+        $user = Auth::user();
+        if (!$user) return ResponseApi::Error("no user");
+
+
+        if (!$user->is_admin) return ResponseApi::Error("no admin user");
+
+
+        $b = NotificationBellBuilder::New()->SetTitle($request->toArray() ['title'] ?? "Уведомление")->SetMessage($request->toArray() ['message'] ?? "Уведомление");
+
+        if (!empty($request->toArray()['link'] ?? "")) {
+            $b->SetBtn('Перейти', $request->toArray() ['link']);
+        }
+        $b->SendToUser(intval($request->toArray() ['uid'] ?? 0));
+
+
+        return ResponseApi::Successful();
+    }
 
 
     public function view_all( Request $request ) {
@@ -31,11 +54,11 @@ class PageNotificationBellController extends Controller {
         $isNew = false;
         /** @var NotificationBell $nb */
         foreach (NotificationBell::where("user_id", $user->id)->orderBy("id", "desc")->get() as $nb) {
-            $html .= view("vendor.notificationbell.content", ['nb' => $nb]);
+            $html .= view("notificationbell.content", ['nb' => $nb]);
             if (!$nb->is_view) $isNew = true;
         }
 
-        if($isNew) {
+        if ($isNew) {
             $user->NotificatioNViewAll();
         }
 

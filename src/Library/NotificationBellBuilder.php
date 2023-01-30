@@ -40,8 +40,14 @@ class NotificationBellBuilder {
         return $this;
     }
 
-    public function SendToUser( User $user ) {
-        $this->nb->user_id = $user->id;
+    /**
+     * @param User|integer $user
+     * @return $this
+     */
+    public function SendToUser(  $user ) {
+        $uid = $user;
+        if(!is_int($uid)) $uid = $user->id;
+        $this->nb->user_id =$uid;
         // $nb = $this->nb::clone();
         $this->nb->save();
         // $this->nb =$nb;
@@ -63,7 +69,7 @@ class NotificationBellBuilder {
         }else{
             $nb->user_id = $uid->id;
         }
-        $nb->message = $uid;
+        $nb->message = $message;
 
         if($link){
             $nb->link_name="Перейти";
