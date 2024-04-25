@@ -20,7 +20,7 @@
     <h4>Отправить уведомление</h4>
 
     <div class="row">
-        <x-easy-form route="{{route('admin.notification.sendpost')}}" btn="Отправить">
+        <x-mrp-form route="{{route('admin.notification.sendpost')}}" btn="Отправить">
 
             @php
                 FElement::NewInputTextRow()
@@ -46,7 +46,7 @@
             @endphp
 
             <input type="hidden" name="uid" value="{{$item->id}}">
-        </x-easy-form>
+        </x-mrp-form>
     </div>
 
 </div>
